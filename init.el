@@ -190,6 +190,7 @@
   :init
   (when (file-directory-p "~/Developer")
     (setq projectile-project-search-path '("~/Developer"))
+    (setq projectile-project-search-path '("~/Developer/clojure"))
     (setq projectile-switch-project-action #'projectile-dired))
 
 
@@ -211,6 +212,9 @@
   "pp"  'counsel-projectile
   "pc"  'projectile-compile-project
   "pd"  'projectile-dired)
+
+(global-set-key (kbd "s-f") 'counsel-projectile-find-file)
+(global-set-key (kbd "s-p") 'counsel-projectile-rg)
 
 (use-package magit
 ;  :bind ("C-M-;" . magit-status)
@@ -243,7 +247,10 @@
   :ensure nil
   :after lsp-mode)
 
-(add-hook 'ruby-mode-hook 'lsp-deferred) ; ruby hooks not working on use-package so i define it here
+;(add-hook 'ruby-mode-hook 'lsp-deferred) ; ruby hooks not working on use-package so i define it here
+(add-hook 'c-mode-hook 'lsp)
+
+(use-package inf-ruby)
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode))
@@ -251,10 +258,39 @@
 (use-package company
   :after lsp-mode
   :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+	      ("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+	("<tab>" . company-indent-or-complete-common))
+  
   :custom (company-idle-delay 0.3))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
+
+(use-package paredit)
+
+(use-package clojure-mode)
+
+(use-package clojure-mode-extra-font-locking)
+
+(use-package cider)
+
+(use-package dumb-jump
+  :config (setq dumb-jump-selector 'ivy))
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+
+(add-to-list 'load-path "~/.emacs.d/customizations")
+
+(load "setup-clojure.el")
+
+(use-package flymake)
+(use-package flymake-ruby)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(setq ruby-insert-encoding-magic-comment nil)
+(use-package git-gutter)
+(global-git-gutter-mode +1)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -263,7 +299,7 @@
  ;; If there is more than one, they won't work right.
  '(ivy-rich-mode t)
  '(package-selected-packages
-   '(company-lsp undo-tree lsp-ui company-box company company-mode lsp-mode evil-magit magit exec-path-from-shell ripgrep counsel-projectile projectile hydra evil-collection evil general doom-themes helpful counsel ivy-rich which-key rainbow-delimiters doom-modeline ivy command-log-mode use-package)))
+   '(git-gutter flymake-ruby fly-make-ruby dumb-jump projectile-rails robe company-lsp undo-tree lsp-ui company-box company company-mode lsp-mode evil-magit magit exec-path-from-shell ripgrep counsel-projectile projectile hydra evil-collection evil general doom-themes helpful counsel ivy-rich which-key rainbow-delimiters doom-modeline ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
