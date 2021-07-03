@@ -188,10 +188,10 @@
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  (when (file-directory-p "~/Developer")
-    (setq projectile-project-search-path '("~/Developer"))
-    (setq projectile-project-search-path '("~/Developer/clojure"))
-    (setq projectile-switch-project-action #'projectile-dired))
+  ;; (when (file-directory-p "~/Developer")
+  ;;   (setq projectile-project-search-path '("~/Developer"))
+  ;;   (setq projectile-project-search-path '("~/Developer/clojure"))
+  ;;   (setq projectile-switch-project-action #'projectile-dired))
 
 
   (when (file-directory-p "~/Work")
@@ -291,6 +291,19 @@
 (use-package git-gutter)
 (global-git-gutter-mode +1)
 
+(use-package neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+(defun find-or-open-split-terminal ()
+  (interactive)
+  (split-window-right)
+  (select-window (next-window))
+  (if (get-buffer "*terminal*")
+      (switch-to-buffer "*terminal*") 
+      (call-interactively 'term)))
+
+(global-set-key (kbd "s-t") 'find-or-open-split-terminal)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -299,7 +312,7 @@
  ;; If there is more than one, they won't work right.
  '(ivy-rich-mode t)
  '(package-selected-packages
-   '(git-gutter flymake-ruby fly-make-ruby dumb-jump projectile-rails robe company-lsp undo-tree lsp-ui company-box company company-mode lsp-mode evil-magit magit exec-path-from-shell ripgrep counsel-projectile projectile hydra evil-collection evil general doom-themes helpful counsel ivy-rich which-key rainbow-delimiters doom-modeline ivy command-log-mode use-package)))
+   '(neotree git-gutter flymake-ruby fly-make-ruby dumb-jump projectile-rails robe company-lsp undo-tree lsp-ui company-box company company-mode lsp-mode evil-magit magit exec-path-from-shell ripgrep counsel-projectile projectile hydra evil-collection evil general doom-themes helpful counsel ivy-rich which-key rainbow-delimiters doom-modeline ivy command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
