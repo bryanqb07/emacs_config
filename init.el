@@ -304,6 +304,8 @@
 
 (global-set-key (kbd "s-t") 'find-or-open-split-terminal)
 
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(toggle-frame-fullscreen)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
